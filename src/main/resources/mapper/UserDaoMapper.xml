@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.baizhi.dao.UserDao">
+    <!--分页查-->
+    <select id="queryRange" resultType="user">
+        select id,username,headimg,phone,brief,wechat,createdate,status,sex from user limit #{start},#{end}
+    </select>
+
+    <!--查总页-->
+    <select id="selectCount" resultType="int">
+        select count(*) from user
+    </select>
+
+    <!--修改状态-->
+    <update id="update">
+        update user set status = #{status} where id = #{id}
+    </update>
+
+    <!--添加-->
+    <insert id="insert" parameterType="user">
+        insert into user values(#{id},#{username},#{headimg},#{phone},#{brief},#{wechat},#{createdate},#{status},#{sex})
+    </insert>
+
+    <!--删除-->
+    <delete id="delete" parameterType="String">
+        delete from user where id = #{id}
+    </delete>
+
+    <!--查所有-->
+    <select id="queryFindAll" resultType="user">
+        select id,username,headimg,phone,brief,wechat,createdate,status,sex from user
+    </select>
+
+    <!--查所有男生-->
+    <select id="man" resultType="cn.baizhi.vo.MonthAndCount">
+        select month(createdate) month ,count(*) count from user where sex = '男' group by month(createdate)
+    </select>
+
+    <!--查所有女生-->
+    <select id="woman" resultType="cn.baizhi.vo.MonthAndCount">
+        select month(createdate) month,count(*) count from user where sex = '女' group by month(createdate)
+    </select>
+
+    <!--根据id查一个-->
+    <select id="queryOne" parameterType="String" resultType="user">
+        select id,username,headimg,phone,brief,wechat,createdate,status,sex from user where id = #{id}
+    </select>
+
+    <!--修改用户信息-->
+    <update id="updateUser" parameterType="user">
+        update user set username = #{username},headimg = #{headimg},phone = #{phone},brief = #{brief},wechat = #{wechat},createdate = #{createdate},status = #{status},sex = #{sex} where id = #{id}
+    </update>
+</mapper>

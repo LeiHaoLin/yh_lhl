@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.baizhi.dao.VideoDao">
+
+    <!--手动映射-->
+    <resultMap id="vid" type="video">
+        <!--主属性-->
+        <id column="id" property="id"/>
+        <!--普通属性-->
+        <result column="title" property="title"/>
+        <result column="brief" property="brief"/>
+        <result column="cover_path" property="coverPath"/>
+        <result column="video_path" property="videoPath"/>
+        <result column="create_date" property="createDate"/>
+        <result column="group_d" property="groupId"/>
+        <!--关系属性-->
+        <association property="category">
+            <id column="category_id" property="id"/>
+            <result column="cate_name" property="cateName"/>
+            <result column="levels" property="levels"/>
+            <result column="parent_id" property="parentId"/>
+        </association>
+        <association property="user">
+            <id column="user_id" property="id"/>
+            <result column="username" property="username"/>
+        </association>
+    </resultMap>
+
+    <!--分页查-->
+    <select id="queryRange" resultMap="vid">
+        select v.id,title,v.brief,cover_path,video_path,create_date,category_id,user_id,cat.cate_name,u.username from
+        (select id,title,brief,cover_path,video_path,create_date,category_id,user_id from video limit #{start},#{end})v
+        left join category cat on v.category_id = cat.id
+        left join user u on v.user_id = u.id
+    </select>
+
+    <!--查总页-->
+    <select id="selectCount" resultType="int">
+        select count(*) from video
+    </select>
+
+    <!--添加-->
+    <insert id="insert" parameterType="video">
+        insert into video values(#{id},#{title},#{brief},#{coverPath,jdbcType=VARCHAR},#{videoPath},#{createDate},#{category.id},#{user.id,jdbcType=VARCHAR},#{groupId,jdbcType=VARCHAR})
+    </insert>
+
+    <!--删除-->
+    <delete id="delete" parameterType="String">
+        delete from video where id = #{id}
+    </delete>
+
+    <!--根据id查一个-->
+    <select id="selectOne" parameterType="String" resultType="video">
+      select id,title,brief,cover_path coverPath,video_path videoPath,create_date createDate from video where id = #{id}
+    </select>
+</mapper>

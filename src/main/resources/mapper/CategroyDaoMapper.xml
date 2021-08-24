@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.baizhi.dao.CategoryDao">
+    <!--手动映射-->
+    <resultMap id="cat" type="category">
+        <!--普通属性-->
+        <id column="id" property="id"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="levels" property="levels"/>
+        <result column="parent_id" property="parentId"/>
+    </resultMap>
+
+    <!--//查1级标题-->
+    <select id="queryByLevels" parameterType="int" resultMap="cat">
+        select id,cate_name,levels,parent_id from category where levels = #{levels}
+    </select>
+
+    <!--//查2级标题-->
+    <select id="queryByParendId" parameterType="String" resultMap="cat">
+        select id,cate_name,levels,parent_id from category where parent_id = #{id}
+    </select>
+
+    <!--添加-->
+    <insert id="save" parameterType="category">
+        insert into category values(#{id},#{cateName},#{levels},#{parentId})
+    </insert>
+
+    <!--删除-->
+    <delete id="delete" parameterType="String">
+        delete from category where id = #{id}
+    </delete>
+</mapper>
