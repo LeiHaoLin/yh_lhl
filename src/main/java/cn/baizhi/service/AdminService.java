@@ -1,7 +1,8 @@
 package cn.baizhi.service;
 
-import cn.baizhi.entity.Admin;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 public interface AdminService {
-    Admin queryByName(String name);
+    Map<String, Object> queryByName(String name, String password, HttpServletRequest request);
 }

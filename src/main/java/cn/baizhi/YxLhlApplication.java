@@ -11,5 +11,4 @@ public class YxLhlApplication {
     public static void main(String[] args) {
         SpringApplication.run(YxLhlApplication.class, args);
     }
-
 }
